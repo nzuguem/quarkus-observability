@@ -15,8 +15,8 @@ services:
     ports:
       - 8080:8080
 
-  vector-default-conf:
-    container_name: vector-default-conf
+  vector-default:
+    container_name: vector-default
     image: timberio/vector:0.36.0-debian
     ports:
       - 8686:8686
@@ -27,6 +27,25 @@ services:
       OBSERVABILITY_APP_PROMETHEUS_SCRAPPING_URL: http://observability-app:8080/q/metrics
     volumes:
       - ./vector/default/:/etc/vector/:ro
+      - logs-volume:/var/log/observability-app/:ro
+
+
+  vector-namespacing:
+    container_name: vector-namespacing
+    image: timberio/vector:0.36.0-debian
+    entrypoint:
+      - 'vector'
+      - '--config-dir'
+      - '/etc/vector'
+    ports:
+      - 8687:8686
+    depends_on:
+      observability-app:
+        condition: service_healthy
+    environment:
+      OBSERVABILITY_APP_PROMETHEUS_SCRAPPING_URL: http://observability-app:8080/q/metrics
+    volumes:
+      - ./vector/namespacing/:/etc/vector/:ro
       - logs-volume:/var/log/observability-app/:ro
 
   prometheus:
@@ -40,7 +59,7 @@ services:
     volumes:
       - ./prometheus:/etc/prometheus
     depends_on:
-      - vector-default-conf
+      - vector-default
 
   grafana:
     image: grafana/grafana

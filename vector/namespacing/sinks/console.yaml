@@ -1,0 +1,5 @@
+inputs:
+  - json-parser
+type: console
+encoding:
+  codec: json

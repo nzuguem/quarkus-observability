@@ -1,0 +1,9 @@
+type: remap
+inputs:
+  - log-file
+source: |
+  # The "file" source generates a JSON payload whose message is the initial log event (https://vector.dev/docs/reference/configuration/sources/file/#examples).
+  # The "!" means that the script should abort on error.
+  . = parse_json!(string!(.message))
+  del(.sequence)
+  .vector_1 = "${HOSTNAME}"

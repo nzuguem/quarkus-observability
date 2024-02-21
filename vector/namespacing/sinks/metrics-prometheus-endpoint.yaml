@@ -1,0 +1,4 @@
+type: prometheus_exporter
+inputs:
+  - metrics-prometheus
+address: 0.0.0.0:9598

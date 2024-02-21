@@ -24,6 +24,7 @@ transforms:
       # The "!" means that the script should abort on error.
       . = parse_json!(string!(.message))
       del(.sequence)
+      .vector_1 = "${HOSTNAME}"
 
 
 sinks:

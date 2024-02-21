@@ -1,0 +1,3 @@
+type: prometheus_scrape
+endpoints:
+  - "${OBSERVABILITY_APP_PROMETHEUS_SCRAPPING_URL}"
