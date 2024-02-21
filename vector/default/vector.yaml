@@ -1,0 +1,40 @@
+api:
+  enabled: true
+  graphql: true
+  playground: true
+  address: "0.0.0.0:8686"
+
+sources:
+  from-log-file:
+    type: file
+    include:
+      - /var/log/observability-app/*.log
+  from-metrics-prometheus-endpoint:
+    type: prometheus_scrape
+    endpoints:
+      - "${OBSERVABILITY_APP_PROMETHEUS_SCRAPPING_URL}"
+
+transforms:
+  json-parser:
+    type: remap
+    inputs:
+      - from-log-file
+    source: |
+      # The "file" source generates a JSON payload whose message is the initial log event (https://vector.dev/docs/reference/configuration/sources/file/#examples).
+      # The "!" means that the script should abort on error.
+      . = parse_json!(string!(.message))
+      del(.sequence)
+
+
+sinks:
+  to-console:
+    inputs:
+      - json-parser
+    type: console
+    encoding:
+      codec: json
+  to-metrics-prometheus-endpoint:
+    type: prometheus_exporter
+    inputs:
+      - from-metrics-prometheus-endpoint
+    address: 0.0.0.0:9598
