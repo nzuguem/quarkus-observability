@@ -23,3 +23,8 @@ datasources:
       httpMethod: GET
       serviceMap:
         datasourceUid: prometheus
+  - name: Mimir
+    type: prometheus
+    url: http://mimir:9009/prometheus
+    access: proxy
+    editable: false

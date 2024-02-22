@@ -28,6 +28,8 @@ exporters:
       insecure: true
   prometheus:
     endpoint: 0.0.0.0:8889
+  prometheusremotewrite:
+    endpoint: http://mimir:9009/api/v1/push
   debug:
   loki:
     endpoint: http://loki:3100/loki/api/v1/push
@@ -55,7 +57,7 @@ service:
     metrics:
       receivers: [prometheus]
       processors: [batch]
-      exporters: [debug, prometheus]
+      exporters: [debug, prometheus, prometheusremotewrite]
     logs:
       receivers: [filelog]
       processors: [batch]

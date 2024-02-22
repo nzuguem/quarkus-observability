@@ -57,6 +57,8 @@ services:
         condition: service_started
       tempo:
         condition: service_started
+      mimir:
+        condition: service_started
 
   prometheus:
     image: prom/prometheus
@@ -109,6 +111,17 @@ services:
       - 4319:4319  # otlp grpc
       - 4320:4320  # otlp http
       - 9411:9411   # zipkin
+
+  mimir:
+    image: grafana/mimir
+    container_name: mimir
+    volumes:
+      - ./grafana/mimir:/etc/mimir-config
+    entrypoint:
+      - /bin/mimir
+      - -config.file=/etc/mimir-config/mimir-config.yaml
+    ports:
+      - 9009:9009
 
 volumes:
   logs-volume:

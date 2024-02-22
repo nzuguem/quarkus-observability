@@ -57,3 +57,8 @@ sinks:
       source: "${HOSTNAME}"
     encoding:
       codec: json
+  to-mimir:
+    type: prometheus_remote_write
+    inputs:
+      - from-metrics-prometheus-endpoint
+    endpoint: "${MIMIR_SERVER_URL}"

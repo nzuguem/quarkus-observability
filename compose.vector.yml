@@ -42,9 +42,14 @@ services:
         condition: service_healthy
       loki:
         condition: service_started
+      tempo:
+        condition: service_started
+      mimir:
+        condition: service_started
     environment:
       OBSERVABILITY_APP_PROMETHEUS_SCRAPPING_URL: http://observability-app:8080/q/metrics
       LOKI_SERVER_URL: http://loki:3100
+      MIMIR_SERVER_URL: http://mimir:9009/api/v1/push
     volumes:
       - ./vector/default/:/etc/vector/:ro
       - logs-volume:/var/log/observability-app/:ro
@@ -64,9 +69,14 @@ services:
         condition: service_healthy
       loki:
         condition: service_started
+      tempo:
+        condition: service_started
+      mimir:
+        condition: service_started
     environment:
       OBSERVABILITY_APP_PROMETHEUS_SCRAPPING_URL: http://observability-app:8080/q/metrics
       LOKI_SERVER_URL: http://loki:3100
+      MIMIR_SERVER_URL: http://mimir:9009/api/v1/push
     volumes:
       - ./vector/namespacing/:/etc/vector/:ro
       - logs-volume:/var/log/observability-app/:ro
@@ -124,6 +134,17 @@ services:
       - 4319:4319  # otlp grpc
       - 4320:4320  # otlp http
       - 9411:9411   # zipkin
+
+  mimir:
+    image: grafana/mimir
+    container_name: mimir
+    volumes:
+      - ./grafana/mimir:/etc/mimir-config
+    entrypoint:
+      - /bin/mimir
+      - -config.file=/etc/mimir-config/mimir-config.yaml
+    ports:
+      - 9009:9009
 
 volumes:
   logs-volume:
