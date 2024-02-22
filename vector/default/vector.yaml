@@ -2,7 +2,7 @@ api:
   enabled: true
   graphql: true
   playground: true
-  address: "0.0.0.0:8686"
+  address: 0.0.0.0:8686
 
 sources:
   from-log-file:
@@ -13,6 +13,15 @@ sources:
     type: prometheus_scrape
     endpoints:
       - "${OBSERVABILITY_APP_PROMETHEUS_SCRAPPING_URL}"
+  from-otlp:
+    type: opentelemetry
+    grpc:
+      address: 0.0.0.0:4317
+    http:
+      address: 0.0.0.0:4318
+      keepalive:
+        max_connection_age_jitter_factor: 0.1
+        max_connection_age_secs: 300
 
 transforms:
   json-parser:

@@ -12,3 +12,14 @@ datasources:
     url: http://loki:3100
     access: proxy
     editable: false
+    jsonData:
+      httpMethod: GET
+  - name: Tempo
+    type: tempo
+    url: http://tempo:3200
+    access: proxy
+    editable: false
+    jsonData:
+      httpMethod: GET
+      serviceMap:
+        datasourceUid: prometheus

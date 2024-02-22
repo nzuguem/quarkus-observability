@@ -1,4 +1,10 @@
 receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
   prometheus:
     config:
       scrape_configs:
@@ -16,8 +22,12 @@ receivers:
       line_start_pattern: ^Exception
 
 exporters:
+  otlp:
+    endpoint: tempo:4319
+    tls:
+      insecure: true
   prometheus:
-    endpoint: "0.0.0.0:8889"
+    endpoint: 0.0.0.0:8889
   debug:
   loki:
     endpoint: http://loki:3100/loki/api/v1/push
@@ -50,3 +60,7 @@ service:
       receivers: [filelog]
       processors: [batch]
       exporters: [debug, loki]
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug, otlp]
