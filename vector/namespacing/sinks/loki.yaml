@@ -1,0 +1,8 @@
+type: loki
+inputs:
+  - json-parser
+endpoint: "${LOKI_SERVER_URL}"
+encoding:
+  codec: json
+labels:
+  source: "${HOSTNAME}"

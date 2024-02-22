@@ -9,11 +9,25 @@ receivers:
             - targets:
                 - observability-app:8080
 
+  filelog:
+    include:
+      - /var/log/observability-app/*.log
+    multiline:
+      line_start_pattern: ^Exception
+
 exporters:
   prometheus:
     endpoint: "0.0.0.0:8889"
-
   debug:
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+    default_labels_enabled:
+      exporter: true
+      job: true
+      instance: true
+      level: true
+    tls:
+      insecure: true
 
 processors:
   batch:
@@ -32,3 +46,7 @@ service:
       receivers: [prometheus]
       processors: [batch]
       exporters: [debug, prometheus]
+    logs:
+      receivers: [filelog]
+      processors: [batch]
+      exporters: [debug, loki]

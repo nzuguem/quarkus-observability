@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    scrape_interval: 1s
+    static_configs:
+      - targets:
+          - otel-collector-contrib:8889
+          - otel-collector-contrib:8888

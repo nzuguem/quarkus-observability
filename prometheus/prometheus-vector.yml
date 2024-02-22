@@ -8,6 +8,4 @@ scrape_configs:
     scrape_interval: 1s
     static_configs:
       - targets:
-          # - vector-default:9598
-          - otel-collector-contrib:8889
-          - otel-collector-contrib:8888
+          - vector-default:9598

@@ -39,3 +39,12 @@ sinks:
     inputs:
       - from-metrics-prometheus-endpoint
     address: 0.0.0.0:9598
+  to-loki:
+    type: loki
+    inputs:
+      - json-parser
+    endpoint: "${LOKI_SERVER_URL}"
+    labels:
+      source: "${HOSTNAME}"
+    encoding:
+      codec: json

@@ -23,8 +23,11 @@ services:
     depends_on:
       observability-app:
         condition: service_healthy
+      loki:
+        condition: service_started
     environment:
       OBSERVABILITY_APP_PROMETHEUS_SCRAPPING_URL: http://observability-app:8080/q/metrics
+      LOKI_SERVER_URL: http://loki:3100
     volumes:
       - ./vector/default/:/etc/vector/:ro
       - logs-volume:/var/log/observability-app/:ro
@@ -42,8 +45,11 @@ services:
     depends_on:
       observability-app:
         condition: service_healthy
+      loki:
+        condition: service_started
     environment:
       OBSERVABILITY_APP_PROMETHEUS_SCRAPPING_URL: http://observability-app:8080/q/metrics
+      LOKI_SERVER_URL: http://loki:3100
     volumes:
       - ./vector/namespacing/:/etc/vector/:ro
       - logs-volume:/var/log/observability-app/:ro
@@ -52,7 +58,7 @@ services:
     image: prom/prometheus
     container_name: prometheus
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--config.file=/etc/prometheus/prometheus-vector.yml'
     ports:
       - 9090:9090
     restart: unless-stopped
@@ -75,6 +81,17 @@ services:
     volumes:
       - ./grafana/provisioning/:/etc/grafana/provisioning/
       - ./grafana/dashboards-as-code/:/var/lib/grafana/dashboards
+
+  loki:
+    image: grafana/loki
+    container_name: loki
+    command:
+      - '-config.file=/etc/loki/loki-config.yaml'
+    ports:
+      - 3100:3100
+      - 9096:9096
+    volumes:
+      - ./grafana/loki:/etc/loki
 
 volumes:
   logs-volume:
