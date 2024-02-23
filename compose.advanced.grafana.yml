@@ -1,0 +1,63 @@
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus-config.yml"
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    volumes:
+      - ${PROMETHEUS_CONFIG_PATH}:/etc/prometheus/prometheus-config.yml
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    environment:
+      GF_SECURITY_ADMIN_USER: grafana
+      GF_SECURITY_ADMIN_PASSWORD: grafana
+    volumes:
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - ./grafana/dashboards-as-code/:/var/lib/grafana/dashboards
+
+  loki:
+    image: grafana/loki
+    container_name: loki
+    command:
+      - '-config.file=/etc/loki/loki-config.yaml'
+    ports:
+      - 3100:3100
+      - 9096:9096
+    volumes:
+      - ./grafana/loki:/etc/loki
+
+  tempo:
+    image: grafana/tempo
+    container_name: tempo
+    command:
+      - '-config.file=/etc/tempo-config.yaml'
+    volumes:
+      - ./grafana/tempo/tempo-config.yaml:/etc/tempo-config.yaml
+    ports:
+      - 14268:14268  # jaeger ingest
+      - 3200:3200   # tempo
+      - 9095:9095 # tempo grpc
+      - 4319:4319  # otlp grpc
+      - 4320:4320  # otlp http
+      - 9411:9411   # zipkin
+
+  mimir:
+    image: grafana/mimir
+    container_name: mimir
+    volumes:
+      - ./grafana/mimir:/etc/mimir-config
+    entrypoint:
+      - /bin/mimir
+      - -config.file=/etc/mimir-config/mimir-config.yaml
+    ports:
+      - 9009:9009

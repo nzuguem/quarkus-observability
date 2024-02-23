@@ -1,0 +1,30 @@
+services:
+
+  otel-collector-contrib:
+    profiles:
+      - otel
+    image: otel/opentelemetry-collector-contrib
+    container_name: otel-collector-contrib
+    command:
+    - '--config=/etc/otel-collector-config.yaml'
+    volumes:
+      - ./otel-collector/otel-collector-config.yaml:/etc/otel-collector-config.yaml
+      - logs-volume:/var/log/observability-app/:ro
+    restart: unless-stopped
+    ports:
+      - 1888:1888  # pprof extension
+      - 8888:8888   # Prometheus metrics exposed by the collector
+      - 8889:8889   # Prometheus exporter metrics
+      - 13133:13133 # health_check extension
+      - 4317:4317   # OTLP gRPC receiver
+      - 4318:4318   # OTLP Http receiver
+      - 55679:55679 # zpages extension
+    depends_on:
+      observability-app:
+        condition: service_healthy
+      loki:
+        condition: service_started
+      tempo:
+        condition: service_started
+      mimir:
+        condition: service_started
