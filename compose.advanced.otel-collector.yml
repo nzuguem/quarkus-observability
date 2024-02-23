@@ -28,3 +28,6 @@ services:
         condition: service_started
       mimir:
         condition: service_started
+    environment:
+        POSTGRESQL_USERNAME: persons
+        POSTGRESQL_PASSWORD: persons

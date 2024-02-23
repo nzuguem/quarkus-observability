@@ -22,6 +22,10 @@ sources:
       keepalive:
         max_connection_age_jitter_factor: 0.1
         max_connection_age_secs: 300
+  from-postgresql:
+    type: postgresql_metrics
+    endpoints:
+      - postgresql://${POSTGRESQL_USERNAME}:${POSTGRESQL_PASSWORD}@persons-db:5432/persons
 
 transforms:
   json-parser:
@@ -61,4 +65,10 @@ sinks:
     type: prometheus_remote_write
     inputs:
       - from-metrics-prometheus-endpoint
+      - from-postgresql
     endpoint: "${MIMIR_SERVER_URL}"
+  to-metrics-prometheus-remote-write:
+    type: prometheus_remote_write
+    inputs:
+      - from-postgresql
+    endpoint: "${PROMETHEUS_SERVER_URL}"

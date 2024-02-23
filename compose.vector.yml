@@ -8,8 +8,8 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8080/q/health"]
       retries: 3
       timeout: 7s
-      interval: 1s
-      start_interval: 1s
+      interval: 3s
+      start_interval: 2s
     volumes:
       - logs-volume:/tmp/observability-app/logs/
     ports:
@@ -50,6 +50,9 @@ services:
       OBSERVABILITY_APP_PROMETHEUS_SCRAPPING_URL: http://observability-app:8080/q/metrics
       LOKI_SERVER_URL: http://loki:3100
       MIMIR_SERVER_URL: http://mimir:9009/api/v1/push
+      PROMETHEUS_SERVER_URL: http://prometheus:9090/api/v1/write
+      POSTGRESQL_USERNAME: persons
+      POSTGRESQL_PASSWORD: persons
     volumes:
       - ./vector/default/:/etc/vector/:ro
       - logs-volume:/var/log/observability-app/:ro
@@ -77,6 +80,9 @@ services:
       OBSERVABILITY_APP_PROMETHEUS_SCRAPPING_URL: http://observability-app:8080/q/metrics
       LOKI_SERVER_URL: http://loki:3100
       MIMIR_SERVER_URL: http://mimir:9009/api/v1/push
+      PROMETHEUS_SERVER_URL: http://prometheus:9090/api/v1/write
+      POSTGRESQL_USERNAME: persons
+      POSTGRESQL_PASSWORD: persons
     volumes:
       - ./vector/namespacing/:/etc/vector/:ro
       - logs-volume:/var/log/observability-app/:ro

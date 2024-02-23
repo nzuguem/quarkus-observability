@@ -1,4 +1,14 @@
 receivers:
+  postgresql:
+    endpoint: persons-db:5432
+    transport: tcp
+    username: ${env:POSTGRESQL_USERNAME}
+    password: ${env:POSTGRESQL_PASSWORD}
+    databases:
+      - persons
+    collection_interval: 10s
+    tls:
+      insecure: true
   otlp:
     protocols:
       grpc:
@@ -55,7 +65,7 @@ service:
   extensions: [pprof, zpages, health_check]
   pipelines:
     metrics:
-      receivers: [prometheus]
+      receivers: [prometheus, postgresql]
       processors: [batch]
       exporters: [debug, prometheus, prometheusremotewrite]
     logs:

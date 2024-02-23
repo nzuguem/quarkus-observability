@@ -13,8 +13,8 @@ services:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/q/health" ]
       retries: 3
       timeout: 7s
-      interval: 1s
-      start_interval: 1s
+      interval: 3s
+      start_interval: 2s
     volumes:
       - logs-volume:/tmp/observability-app/logs/
     ports:
