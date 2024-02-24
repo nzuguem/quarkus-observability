@@ -1,4 +1,0 @@
-type: prometheus_remote_write
-inputs:
-  - postgresql
-endpoint: "${PROMETHEUS_SERVER_URL}"

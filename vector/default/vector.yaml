@@ -51,6 +51,7 @@ sinks:
     type: prometheus_exporter
     inputs:
       - from-metrics-prometheus-endpoint
+      - from-postgresql
     address: 0.0.0.0:9598
   to-loki:
     type: loki
@@ -67,8 +68,3 @@ sinks:
       - from-metrics-prometheus-endpoint
       - from-postgresql
     endpoint: "${MIMIR_SERVER_URL}"
-  to-metrics-prometheus-remote-write:
-    type: prometheus_remote_write
-    inputs:
-      - from-postgresql
-    endpoint: "${PROMETHEUS_SERVER_URL}"

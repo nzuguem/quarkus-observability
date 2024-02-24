@@ -1,4 +1,5 @@
 type: prometheus_exporter
 inputs:
   - metrics-prometheus
+  - postgresql
 address: 0.0.0.0:9598

@@ -50,7 +50,6 @@ services:
       OBSERVABILITY_APP_PROMETHEUS_SCRAPPING_URL: http://observability-app:8080/q/metrics
       LOKI_SERVER_URL: http://loki:3100
       MIMIR_SERVER_URL: http://mimir:9009/api/v1/push
-      PROMETHEUS_SERVER_URL: http://prometheus:9090/api/v1/write
       POSTGRESQL_USERNAME: persons
       POSTGRESQL_PASSWORD: persons
     volumes:
@@ -80,7 +79,6 @@ services:
       OBSERVABILITY_APP_PROMETHEUS_SCRAPPING_URL: http://observability-app:8080/q/metrics
       LOKI_SERVER_URL: http://loki:3100
       MIMIR_SERVER_URL: http://mimir:9009/api/v1/push
-      PROMETHEUS_SERVER_URL: http://prometheus:9090/api/v1/write
       POSTGRESQL_USERNAME: persons
       POSTGRESQL_PASSWORD: persons
     volumes:
