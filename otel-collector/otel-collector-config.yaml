@@ -65,7 +65,7 @@ service:
   extensions: [pprof, zpages, health_check]
   pipelines:
     metrics:
-      receivers: [prometheus, postgresql]
+      receivers: [prometheus, postgresql, otlp]
       processors: [batch]
       exporters: [debug, prometheus, prometheusremotewrite]
     logs:

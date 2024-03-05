@@ -52,6 +52,7 @@ sinks:
     inputs:
       - from-metrics-prometheus-endpoint
       - from-postgresql
+      - from-otlp
     address: 0.0.0.0:9598
   to-loki:
     type: loki
@@ -67,4 +68,5 @@ sinks:
     inputs:
       - from-metrics-prometheus-endpoint
       - from-postgresql
+      - from-otlp
     endpoint: "${MIMIR_SERVER_URL}"

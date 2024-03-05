@@ -26,6 +26,7 @@ services:
       QUARKUS_DATASOURCE_PASSWORD: persons
       QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://persons-db:5432/persons
       QUARKUS_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: ${QUARKUS_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT}
+      QUARKUS_MICROMETER_EXPORT_OTLP_URL: ${QUARKUS_MICROMETER_EXPORT_OTLP_URL}
     # docker compose -f compose.otel-collector.yml watch
     develop:
       watch:
