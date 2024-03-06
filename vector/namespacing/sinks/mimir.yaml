@@ -2,5 +2,4 @@ type: prometheus_remote_write
 inputs:
   - metrics-prometheus
   - postgresql
-  - otlp
 endpoint: "${MIMIR_SERVER_URL}"

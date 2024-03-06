@@ -1,12 +1,9 @@
 services:
 
-  vector-default:
+  x-common: &common
     profiles:
       - vector
-    container_name: vector-default
     image: timberio/vector:0.36.0-debian
-    ports:
-      - 8686:8686
     depends_on:
       observability-app:
         condition: service_healthy
@@ -22,37 +19,31 @@ services:
       MIMIR_SERVER_URL: http://mimir:9009/api/v1/push
       POSTGRESQL_USERNAME: persons
       POSTGRESQL_PASSWORD: persons
+
+  vector-default:
+    <<: *common
+    x-description: >-
+      Vector instance with default configuration (defined in a single file)
+    container_name: vector-default
+    ports:
+      - 8686:8686
     volumes:
       - ./vector/default/:/etc/vector/:ro
       - logs-volume:/var/log/observability-app/:ro
 
 
   vector-namespacing:
-    profiles:
-      - vector
+    <<: *common
+    x-description: >-
+      Vector instance with configuration split into several files: Namespacing
     container_name: vector-namespacing
-    image: timberio/vector:0.36.0-debian
-    entrypoint:
-      - 'vector'
-      - '--config-dir'
-      - '/etc/vector'
+    entrypoint: |
+      /bin/sh -c '
+        echo "Endpoint Metrics : $$OBSERVABILITY_APP_PROMETHEUS_SCRAPPING_URL"
+        vector --config-dir /etc/vector
+      '
     ports:
       - 8687:8686
-    depends_on:
-      observability-app:
-        condition: service_healthy
-      loki:
-        condition: service_started
-      tempo:
-        condition: service_started
-      mimir:
-        condition: service_started
-    environment:
-      OBSERVABILITY_APP_PROMETHEUS_SCRAPPING_URL: http://observability-app:8080/q/metrics
-      LOKI_SERVER_URL: http://loki:3100
-      MIMIR_SERVER_URL: http://mimir:9009/api/v1/push
-      POSTGRESQL_USERNAME: persons
-      POSTGRESQL_PASSWORD: persons
     volumes:
       - ./vector/namespacing/:/etc/vector/:ro
       - logs-volume:/var/log/observability-app/:ro

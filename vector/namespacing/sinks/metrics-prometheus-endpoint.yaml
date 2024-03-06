@@ -2,5 +2,4 @@ type: prometheus_exporter
 inputs:
   - metrics-prometheus
   - postgresql
-  - otlp
 address: 0.0.0.0:9598

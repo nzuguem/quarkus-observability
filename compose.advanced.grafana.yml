@@ -8,7 +8,7 @@ services:
       - 9090:9090
     restart: unless-stopped
     volumes:
-      - ${PROMETHEUS_CONFIG_PATH}:/etc/prometheus/prometheus-config.yml
+      - ${PROMETHEUS_CONFIG_PATH:?err}:/etc/prometheus/prometheus-config.yml
 
   grafana:
     image: grafana/grafana

@@ -27,9 +27,9 @@ docker compose --env-file otel.advanced.env --profile otel -f compose.advanced.y
 #### Naïve
 ```bash
 ./mvnw clean package
-docker compose -f compose.vector-collector.yml up --build
+docker compose -f compose.vector.yml up --build
 ## Other Terminal
-docker compose -f compose.vector-collector.yml watch
+docker compose -f compose.vector.yml watch
 ```
 
 
