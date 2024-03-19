@@ -1,5 +1,6 @@
 include:
   - path: compose.advanced.lgtm.yml
+  - path: compose.advanced.prometheus.yml
   - path: compose.advanced.otel-collector.yml
   - path: compose.advanced.vector.yml
 

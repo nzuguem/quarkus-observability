@@ -157,5 +157,13 @@ services:
     ports:
       - 4040:4040
 
+  blackbox-exporter:
+    image: prom/blackbox-exporter
+    container_name: blackbox_exporter
+    ports:
+      - 9115:9115
+    volumes:
+      - ./prometheus/blackbox-exporter.yml:/etc/blackbox_exporter/config.yml
+
 volumes:
   logs-volume:

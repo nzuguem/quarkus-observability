@@ -1,0 +1,19 @@
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus-config.yml"
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    volumes:
+      - ${PROMETHEUS_CONFIG_PATH:?err}:/etc/prometheus/prometheus-config.yml
+
+  blackbox-exporter:
+    image: prom/blackbox-exporter
+    container_name: blackbox_exporter
+    ports:
+      - 9115:9115
+    volumes:
+      - ./prometheus/blackbox-exporter.yml:/etc/blackbox_exporter/config.yml
