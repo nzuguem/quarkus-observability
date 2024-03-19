@@ -1,10 +1,11 @@
-package me.nzuguem.observability.entities.resources;
+package me.nzuguem.observability.resources;
 
 import io.quarkus.logging.Log;
 import io.smallrye.common.annotation.RunOnVirtualThread;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import me.nzuguem.observability.entities.Person;
+import me.nzuguem.observability.services.PersonService;
 import org.jboss.resteasy.reactive.RestPath;
 
 import java.util.List;
@@ -13,6 +14,11 @@ import java.util.List;
 @RunOnVirtualThread
 public class PersonResource {
 
+    private final PersonService personService;;
+
+    public PersonResource(PersonService personService) {
+        this.personService = personService;
+    }
 
     @Path("{name}")
     @GET
@@ -20,7 +26,7 @@ public class PersonResource {
 
         Log.infof("Get person %s", name);
 
-        return Person.byName(name);
+        return this.personService.findByName(name);
     }
 
     @GET
@@ -28,7 +34,7 @@ public class PersonResource {
 
         Log.info("Get all persons");
 
-        return Person.all();
+        return this.personService.findAll();
     }
 
 }
