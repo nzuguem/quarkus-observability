@@ -20,13 +20,13 @@ public class PersonResource {
         this.personService = personService;
     }
 
-    @Path("{name}")
+    @Path("{id}")
     @GET
-    public Person findByName(@RestPath String name) {
+    public Person findById(@RestPath Long id) {
 
-        Log.infof("Get person %s", name);
+        Log.infof("Get person %d", id);
 
-        return this.personService.findByName(name);
+        return this.personService.findById(id);
     }
 
     @GET

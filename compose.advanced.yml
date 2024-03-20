@@ -3,6 +3,7 @@ include:
   - path: compose.advanced.prometheus.yml
   - path: compose.advanced.otel-collector.yml
   - path: compose.advanced.vector.yml
+  - path: compose.advanced.persons-random-api.yml
 
 services:
   observability-app:
@@ -23,6 +24,7 @@ services:
       - 8080:8080
     depends_on:
       - persons-db
+      - persons-random-api
     environment:
       QUARKUS_DATASOURCE_USERNAME: persons
       QUARKUS_DATASOURCE_PASSWORD: persons
@@ -30,6 +32,7 @@ services:
       QUARKUS_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: ${QUARKUS_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT:?err}
       QUARKUS_MICROMETER_EXPORT_OTLP_URL: ${QUARKUS_MICROMETER_EXPORT_OTLP_URL:?err}
       PYROSCOPE_SERVER_ADDRESS: http://pyroscope:4040
+      QUARKUS_REST_CLIENT_PERSONS_RANDOM_API_URL: http://persons-random-api:8585
     # docker compose -f compose.otel-collector.yml watch
     develop:
       watch:

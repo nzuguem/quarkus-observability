@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/persons/random"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "random-person.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

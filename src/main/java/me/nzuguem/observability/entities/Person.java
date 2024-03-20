@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 public class Person extends PanacheEntity {
@@ -19,8 +20,8 @@ public class Person extends PanacheEntity {
         return listAll();
     }
 
-    public static Person byName(String name) {
-        return find("name", name).firstResult();
+    public static Optional<Person> byId(Long id) {
+        return findByIdOptional(id);
     }
 
 }

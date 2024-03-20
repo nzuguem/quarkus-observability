@@ -24,6 +24,7 @@ services:
       QUARKUS_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://otel-collector-contrib:4317
       QUARKUS_MICROMETER_EXPORT_OTLP_URL: http://otel-collector-contrib:4318/v1/metrics
       PYROSCOPE_SERVER_ADDRESS: http://pyroscope:4040
+      QUARKUS_REST_CLIENT_PERSONS_RANDOM_API_URL: http://persons-random-api:8585
   persons-db:
     image: postgres:15
     container_name: persons-db
@@ -140,6 +141,19 @@ services:
       - 9115:9115
     volumes:
       - ./prometheus/blackbox-exporter.yml:/etc/blackbox_exporter/config.yml
+
+  persons-random-api:
+    container_name: persons-random-api
+    image: wiremock/wiremock
+    ports:
+      - 3001:8585
+    command:
+      - --port=8585
+      - --verbose
+      - --disable-banner
+    volumes:
+      - ./wiremock/random-person.json:/home/wiremock/__files/random-person.json
+      - ./wiremock/persons-random-api.json:/home/wiremock/mappings/persons-random-api.json
 
 volumes:
   logs-volume:

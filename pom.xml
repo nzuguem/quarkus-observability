@@ -83,6 +83,14 @@
       <artifactId>quarkus-micrometer-registry-otlp</artifactId>
       <version>3.2.4</version>
     </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-rest-client-reactive-jackson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-extension-trace-propagators</artifactId>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

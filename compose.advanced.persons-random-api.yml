@@ -1,0 +1,13 @@
+services:
+  persons-random-api:
+    container_name: persons-random-api
+    image: wiremock/wiremock
+    ports:
+      - 3001:8585
+    command:
+      - --port=8585
+      - --verbose
+      - --disable-banner
+    volumes:
+      - ./wiremock/random-person.json:/home/wiremock/__files/random-person.json
+      - ./wiremock/persons-random-api.json:/home/wiremock/mappings/persons-random-api.json
