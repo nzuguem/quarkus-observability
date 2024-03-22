@@ -9,5 +9,5 @@ services:
       - --verbose
       - --disable-banner
     volumes:
-      - ./wiremock/random-person.json:/home/wiremock/__files/random-person.json
-      - ./wiremock/persons-random-api.json:/home/wiremock/mappings/persons-random-api.json
+      - ./wiremock/stubs:/home/wiremock/__files
+      - ./wiremock/mappings:/home/wiremock/mappings
