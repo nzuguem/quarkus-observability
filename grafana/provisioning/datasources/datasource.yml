@@ -3,6 +3,7 @@ apiVersion: 1
 datasources:
 
   - name: Prometheus
+    uid: Prometheus
     type: prometheus
     url: http://prometheus:9090
     isDefault: true
@@ -12,21 +13,26 @@ datasources:
       timeInterval: 60s
       exemplarTraceIdDestinations:
         - name: trace_id
-          datasourceUid: tempo
+          datasourceUid: Tempo
 
   - name: Loki
+    uid: Loki
     type: loki
     url: http://loki:3100
     access: proxy
     editable: false
     jsonData:
       derivedFields:
-        - name: 'trace_id'
-          matcherRegex: '"traceid":"(\w+)"'
+        - name: trace_id
+          matcherRegex: "traceId:(\\w+)"
+          # url will be interpreted as query for the datasource
           url: '$${__value.raw}'
-          datasourceUid: 'tempo'
+          datasourceUid: Tempo
+          # optional for URL Label to set a custom display label for the link.
+          urlDisplayLabel: View Trace
 
   - name: Tempo
+    uid: Tempo
     type: tempo
     url: http://tempo:3200
     access: proxy
@@ -38,15 +44,16 @@ datasources:
         mapTagNamesEnabled: true
         filterByTraceID: true
       serviceMap:
-        datasourceUid: prometheus
+        datasourceUid: Prometheus
       search:
         hide: false
       nodeGraph:
         enabled: true
       lokiSearch:
-        datasourceUid: loki
+        datasourceUid: Loki
 
   - name: Mimir
+    uid: Mimir
     type: prometheus
     url: http://mimir:9009/prometheus
     access: proxy
@@ -55,10 +62,11 @@ datasources:
       timeInterval: 60s
       exemplarTraceIdDestinations:
         - name: trace_id
-          datasourceUid: tempo
+          datasourceUid: Tempo
 
   - name: Pyroscope
+    uid: Pyroscope
     type: grafana-pyroscope-datasource
     url: http://pyroscope:4040
     jsonData:
-      minStep: '15s'
+      minStep: 15s

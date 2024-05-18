@@ -10,14 +10,16 @@ scrape_configs:
       - targets:
           - otel-collector-contrib:8889
           - otel-collector-contrib:8888
+  # Prometheus will scrape the exporter on the “metrics_path”, and the exporter will then scrape the "static_configs.targets".
+  # "metrics_path", is here the PATH on which the exporter exposes metrics 
   - job_name: blackbox-exporter
     # scheme: http
-    metrics_path: /probe
+    metrics_path: /probe # Default is /metrics, But since it's an exporter, we put the PATH of the exporter
     params:
       module: [ http_2xx ]  # Look for a HTTP 200 response.
     static_configs:
       - targets:
-          - http://observability-app:8080/q/health    # Target to probe with http.
+          - http://observability-app:8080/q/health    # Target that the exporter will check 
     relabel_configs:
       - source_labels: [ __address__ ]
         target_label: __param_target
